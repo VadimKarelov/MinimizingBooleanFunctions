@@ -1,0 +1,16 @@
+D:\University\2 year\DiscreteMath\MinimizingBooleanFunctions\MinimizingBooleanFunctions\bin\Debug\net5.0\MinimizingBooleanFunctions.exe
+D:\University\2 year\DiscreteMath\MinimizingBooleanFunctions\MinimizingBooleanFunctions\bin\Debug\net5.0\MinimizingBooleanFunctions.deps.json
+D:\University\2 year\DiscreteMath\MinimizingBooleanFunctions\MinimizingBooleanFunctions\bin\Debug\net5.0\MinimizingBooleanFunctions.runtimeconfig.json
+D:\University\2 year\DiscreteMath\MinimizingBooleanFunctions\MinimizingBooleanFunctions\bin\Debug\net5.0\MinimizingBooleanFunctions.runtimeconfig.dev.json
+D:\University\2 year\DiscreteMath\MinimizingBooleanFunctions\MinimizingBooleanFunctions\bin\Debug\net5.0\MinimizingBooleanFunctions.dll
+D:\University\2 year\DiscreteMath\MinimizingBooleanFunctions\MinimizingBooleanFunctions\bin\Debug\net5.0\ref\MinimizingBooleanFunctions.dll
+D:\University\2 year\DiscreteMath\MinimizingBooleanFunctions\MinimizingBooleanFunctions\bin\Debug\net5.0\MinimizingBooleanFunctions.pdb
+D:\University\2 year\DiscreteMath\MinimizingBooleanFunctions\MinimizingBooleanFunctions\obj\Debug\net5.0\MinimizingBooleanFunctions.csproj.AssemblyReference.cache
+D:\University\2 year\DiscreteMath\MinimizingBooleanFunctions\MinimizingBooleanFunctions\obj\Debug\net5.0\MinimizingBooleanFunctions.GeneratedMSBuildEditorConfig.editorconfig
+D:\University\2 year\DiscreteMath\MinimizingBooleanFunctions\MinimizingBooleanFunctions\obj\Debug\net5.0\MinimizingBooleanFunctions.AssemblyInfoInputs.cache
+D:\University\2 year\DiscreteMath\MinimizingBooleanFunctions\MinimizingBooleanFunctions\obj\Debug\net5.0\MinimizingBooleanFunctions.AssemblyInfo.cs
+D:\University\2 year\DiscreteMath\MinimizingBooleanFunctions\MinimizingBooleanFunctions\obj\Debug\net5.0\MinimizingBooleanFunctions.csproj.CoreCompileInputs.cache
+D:\University\2 year\DiscreteMath\MinimizingBooleanFunctions\MinimizingBooleanFunctions\obj\Debug\net5.0\MinimizingBooleanFunctions.dll
+D:\University\2 year\DiscreteMath\MinimizingBooleanFunctions\MinimizingBooleanFunctions\obj\Debug\net5.0\ref\MinimizingBooleanFunctions.dll
+D:\University\2 year\DiscreteMath\MinimizingBooleanFunctions\MinimizingBooleanFunctions\obj\Debug\net5.0\MinimizingBooleanFunctions.pdb
+D:\University\2 year\DiscreteMath\MinimizingBooleanFunctions\MinimizingBooleanFunctions\obj\Debug\net5.0\MinimizingBooleanFunctions.genruntimeconfig.cache
