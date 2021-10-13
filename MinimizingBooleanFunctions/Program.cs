@@ -118,11 +118,26 @@ namespace MinimizingBooleanFunctions
                     usedElements.Remove(usedElements.Max);
                 }
 
+                // delete equal elements
+                int i1 = function.Count - 1;
+                int j1 = i1 - 1;
+                while (mergeHappened && i1 > 0)
+                {
+                    if (i1 > 0 && function[i1] == function[j1])
+                    {
+                        function.RemoveAt(i1);
+                        i1--;
+                    }
+                    j1--;
+                    if (j1 < 0)
+                    {
+                        i1--;
+                        j1 = i1 - 1;
+                    }
+                }
+
                 if (mergeHappened)
                     PrintFunction(function);
-
-                // to do
-                // delete equal elements
             }
         }
 
@@ -252,6 +267,16 @@ namespace MinimizingBooleanFunctions
             }
 
             return res;
+        }
+
+        public static bool operator ==(Constituent operand1, Constituent operand2)
+        {
+            return operand1.GetInteriorFormat() == operand2.GetInteriorFormat();
+        }
+
+        public static bool operator !=(Constituent operand1, Constituent operand2)
+        {
+            return operand1.GetInteriorFormat() != operand2.GetInteriorFormat();
         }
     }
 
