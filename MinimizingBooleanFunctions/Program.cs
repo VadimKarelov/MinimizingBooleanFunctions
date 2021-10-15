@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MinimizingBooleanFunctions
 {
@@ -7,8 +8,10 @@ namespace MinimizingBooleanFunctions
     {
         static int[] vector = new int[16];
         static int[][] truthTable = new int[16][];
-        static List<Constituent> function = new List<Constituent>();
+        static List<Constituent> function = new();
         static List<Constituent> DNF;
+        static List<Constituent> minimezedFunction = new();
+        static bool[,] implicantMatrix;
 
         static void Main(string[] args)
         {
@@ -20,10 +23,16 @@ namespace MinimizingBooleanFunctions
             // DNF
             CreateDNF();
             PrintFunction(function);
-            DNF = function;
+            Constituent[] t = new Constituent[function.Count];
+            function.CopyTo(t);
+            DNF = t.ToList();
 
             // abbreviated DNF
             CreateADNF();
+
+            // implicant matrix
+            CreateImplicantMatrix();
+            PrintImplicantMatrix();
         }
 
         static void InputVector()
@@ -156,9 +165,54 @@ namespace MinimizingBooleanFunctions
 
             Console.WriteLine(res);
         }
+
+        static void CreateImplicantMatrix()
+        {
+            implicantMatrix = new bool[function.Count, DNF.Count];
+
+            for (int i = 0; i < function.Count; i++)
+            {
+                for (int j = 0; j < DNF.Count; j++)
+                {
+                    implicantMatrix[i, j] = function[i].IsIncluded(DNF[j]);
+                }
+            }
+        }
+
+        static void PrintImplicantMatrix()
+        {
+            Console.WriteLine("\nИмпликантная матрица");
+            // print columns names
+            string str = String.Format("{0, -9}", "");
+            foreach (var elem in DNF)
+            {
+                str += String.Format("{0, -9}", elem.ToString());
+            }
+            Console.WriteLine(str);
+
+            for (int i = 0; i < function.Count; i++)
+            {
+                str = String.Format("{0, -9}", function[i].ToString());
+                for (int j = 0; j < implicantMatrix.GetLength(1); j++)
+                {
+                    str += String.Format("{0, -9}", implicantMatrix[i, j].ToString());
+                }
+                Console.WriteLine(str);
+            }
+        }
+
+        static void CreateFunctionFromImplicantMatrix()
+        {
+            
+        }
+
+        static string FindMinNumberOfConstituent_R()
+        {
+
+        }
     }
 
-    class Constituent : IConstituent
+    class Constituent : ICloneable
     {
         /*
         contain constituent in text format xyzw
@@ -236,6 +290,29 @@ namespace MinimizingBooleanFunctions
 
             return new Constituent(res[0], res[1], res[2], res[3]);
         }
+
+        public bool IsIncluded(Constituent constituent)
+        {
+            if (this == constituent) return true;
+
+            if (this.Length > constituent.Length) return false;
+
+            string con2 = constituent.GetInteriorFormat();
+
+            for (int i = 0; i < 4; i++)
+            {                
+                if (!(this.con[i] == con2[i] || this.con[i] == '2'))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
         
         public override string ToString()
         {
@@ -278,12 +355,5 @@ namespace MinimizingBooleanFunctions
         {
             return operand1.GetInteriorFormat() != operand2.GetInteriorFormat();
         }
-    }
-
-    interface IConstituent
-    {
-        public bool IsMerge(Constituent constituent);
-
-        public Constituent Merge(Constituent constituent);
     }
 }
