@@ -8,9 +8,9 @@ namespace MinimizingBooleanFunctions
     {
         static int[] vector = new int[16];
         static int[][] truthTable = new int[16][];
-        static List<Constituent> function = new();
+        static List<Constituent> function;
         static List<Constituent> DNF;
-        static List<Constituent> minimezedFunction = new();
+        static List<Constituent> minimizedFunction;
         static bool[,] implicantMatrix;
 
         static void Main(string[] args)
@@ -33,6 +33,11 @@ namespace MinimizingBooleanFunctions
             // implicant matrix
             CreateImplicantMatrix();
             PrintImplicantMatrix();
+            CreateFunctionFromImplicantMatrix();
+
+            // output
+            Console.WriteLine();
+            PrintFunction(minimizedFunction);
         }
 
         static void InputVector()
@@ -80,6 +85,7 @@ namespace MinimizingBooleanFunctions
         // DNF = disjunctive normal form
         static void CreateDNF()
         {
+            function = new();
             for (int i = 0; i < truthTable.Length; i++)
             {
                 if (truthTable[i][4] == 1)
@@ -203,13 +209,27 @@ namespace MinimizingBooleanFunctions
 
         static void CreateFunctionFromImplicantMatrix()
         {
-            
-        }
+            minimizedFunction = new();
+            SortedSet<int> path = new();
 
-        static string FindMinNumberOfConstituent_R()
-        {
+            // find path
+            for (int col = 0; col < DNF.Count; col++)
+            {
+                int row = 0;
+                while (!implicantMatrix[row, col])
+                {
+                    row++;
+                }
+                path.Add(row);
+            }
 
-        }
+            // add functions from the path
+            while (path.Count > 0)
+            {
+                minimizedFunction.Add(function[path.Max]);
+                path.Remove(path.Max);
+            }
+        }        
     }
 
     class Constituent : ICloneable
