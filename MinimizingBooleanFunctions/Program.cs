@@ -133,7 +133,7 @@ namespace MinimizingBooleanFunctions
                     usedElements.Remove(usedElements.Max);
                 }
 
-                // delete equal elements
+                // delete equal elements                
                 int i1 = function.Count - 1;
                 int j1 = i1 - 1;
                 while (mergeHappened && i1 > 0)
@@ -149,11 +149,12 @@ namespace MinimizingBooleanFunctions
                         i1--;
                         j1 = i1 - 1;
                     }
-                }
+                }               
 
                 if (mergeHappened)
                     PrintFunction(function);
             }
+            function.Reverse();
         }
 
         static void PrintFunction(List<Constituent> function)
@@ -265,20 +266,10 @@ namespace MinimizingBooleanFunctions
             // only to equal number of elements
             if (this.Length != constituent.Length) return false;
 
-            int sum = int.Parse(con) + int.Parse(constituent.GetInteriorFormat());
-            /*
-            In theory, if sum of interior forms have only one "1" and one odd number,
-            then merging can be completed. It means we can check sum == 1 => merging can be completed.
-            */
-            int oddSum = 0;
-            while (sum > 0)
-            {
-                if (sum % 2 == 1)
-                    oddSum += sum % 10;
-                sum /= 10;
-            }
-
-            return oddSum == 1;
+            return this.con[0] != constituent.GetInteriorFormat()[0] && this.con[1] == constituent.GetInteriorFormat()[1] && this.con[2] == constituent.GetInteriorFormat()[2] && this.con[3] == constituent.GetInteriorFormat()[3]
+                || this.con[0] == constituent.GetInteriorFormat()[0] && this.con[1] != constituent.GetInteriorFormat()[1] && this.con[2] == constituent.GetInteriorFormat()[2] && this.con[3] == constituent.GetInteriorFormat()[3]
+                || this.con[0] == constituent.GetInteriorFormat()[0] && this.con[1] == constituent.GetInteriorFormat()[1] && this.con[2] != constituent.GetInteriorFormat()[2] && this.con[3] == constituent.GetInteriorFormat()[3]
+                || this.con[0] == constituent.GetInteriorFormat()[0] && this.con[1] == constituent.GetInteriorFormat()[1] && this.con[2] == constituent.GetInteriorFormat()[2] && this.con[3] != constituent.GetInteriorFormat()[3];
         }
 
         public Constituent Merge(Constituent constituent)
