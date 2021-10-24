@@ -23,7 +23,7 @@ namespace MinimizingBooleanFunctions
             // DNF
             CreateDNF();
             PrintFunction(function);
-            Constituent[] t = new Constituent[function.Count];
+            Constituent[] t = new Constituent[function.Count];            
             function.CopyTo(t);
             DNF = t.ToList();
 
@@ -169,6 +169,10 @@ namespace MinimizingBooleanFunctions
                 }
                 res = res.Remove(res.Length - 3);                
             }
+            else
+            {
+                res += "0";
+            }
 
             Console.WriteLine(res);
         }
@@ -190,39 +194,31 @@ namespace MinimizingBooleanFunctions
         {
             Console.WriteLine("\nИмпликантная матрица");
             // print columns names
-            string str = String.Format("{0, -9}", "");
+            string str = String.Format("{0, -10}", "");
             foreach (var elem in DNF)
             {
-                str += String.Format("{0, -9}", elem.ToString());
+                str += String.Format("{0, -10}", elem.ToString());
             }
             Console.WriteLine(str);
 
             for (int i = 0; i < function.Count; i++)
             {
-                str = String.Format("{0, -9}", function[i].ToString());
+                str = String.Format("{0, -10}", function[i].ToString());
                 for (int j = 0; j < implicantMatrix.GetLength(1); j++)
                 {
-                    str += String.Format("{0, -9}", implicantMatrix[i, j].ToString());
+                    str += String.Format("{0, -10}", implicantMatrix[i, j].ToString());
                 }
                 Console.WriteLine(str);
             }
         }
 
         static void CreateFunctionFromImplicantMatrix()
-        {
+        {            
             minimizedFunction = new();
             SortedSet<int> path = new();
 
             // find path
-            for (int col = 0; col < DNF.Count; col++)
-            {
-                int row = 0;
-                while (!implicantMatrix[row, col])
-                {
-                    row++;
-                }
-                path.Add(row);
-            }
+            path = FindMinNumberOfRows_R(path, 0, 0);
 
             // add functions from the path
             while (path.Count > 0)
@@ -231,6 +227,62 @@ namespace MinimizingBooleanFunctions
                 path.Remove(path.Max);
             }
         }        
+
+        static SortedSet<int> FindMinNumberOfRows_R(SortedSet<int> path, int i, int j)
+        {
+            // i = rows = function
+            // j = columns = DNF
+            // проверку столбцов скорее всего можно будет упразднить
+            // check for end of matrix
+            if (i < function.Count && j < DNF.Count)
+            {
+                // we are at the right way
+                if (implicantMatrix[i, j])
+                {
+                    if (path.Count == 0)
+                        path.Add(i);
+                    return FindMinNumberOfRows_R(path, i, j + 1);
+                }
+                // miss
+                else
+                {
+                    // find another way
+                    for (int k = 0; k < function.Count; k++)
+                    {
+                        bool IsFirst = true;
+
+                        // if find another way
+                        if (implicantMatrix[k, j])
+                        {
+                            // copy
+                            var curPath = path;
+                            // add new line
+                            curPath.Add(k);
+                            curPath = FindMinNumberOfRows_R(curPath, k, j + 1);
+
+                            // if we did not find min path yet
+                            if (IsFirst)
+                            {
+                                path = curPath;
+                            }
+                            else
+                            {
+                                // if we find better path
+                                if (curPath.Count() < path.Count())
+                                {
+                                    path = curPath;
+                                }
+                            }
+                        }
+                    }
+                    return path;
+                }
+            }
+            else
+            {
+                return path;
+            }
+        }
     }
 
     class Constituent : ICloneable
@@ -327,7 +379,10 @@ namespace MinimizingBooleanFunctions
         
         public override string ToString()
         {
-            string res = "";
+            if (con == "2222")
+                return "1";
+
+            string res = "";            
 
             if (con[0] != '2')
             {
