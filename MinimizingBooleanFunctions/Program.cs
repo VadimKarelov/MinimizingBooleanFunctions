@@ -23,9 +23,7 @@ namespace MinimizingBooleanFunctions
             // DNF
             CreateDNF();
             PrintFunction(function);
-            Constituent[] t = new Constituent[function.Count];            
-            function.CopyTo(t);
-            DNF = t.ToList();
+            DNF = new(function);
 
             // abbreviated DNF
             CreateADNF();
@@ -246,16 +244,15 @@ namespace MinimizingBooleanFunctions
                 // miss
                 else
                 {
+                    bool IsFirst = true;
                     // find another way
                     for (int k = 0; k < function.Count; k++)
                     {
-                        bool IsFirst = true;
-
                         // if find another way
                         if (implicantMatrix[k, j])
                         {
                             // copy
-                            var curPath = path;
+                            SortedSet<int> curPath = new(path);
                             // add new line
                             curPath.Add(k);
                             curPath = FindMinNumberOfRows_R(curPath, k, j + 1);
@@ -268,11 +265,12 @@ namespace MinimizingBooleanFunctions
                             else
                             {
                                 // if we find better path
-                                if (curPath.Count() < path.Count())
+                                if (curPath.Count < path.Count)
                                 {
                                     path = curPath;
                                 }
                             }
+                            IsFirst = false;
                         }
                     }
                     return path;
@@ -318,10 +316,13 @@ namespace MinimizingBooleanFunctions
             // only to equal number of elements
             if (this.Length != constituent.Length) return false;
 
-            return this.con[0] != constituent.GetInteriorFormat()[0] && this.con[1] == constituent.GetInteriorFormat()[1] && this.con[2] == constituent.GetInteriorFormat()[2] && this.con[3] == constituent.GetInteriorFormat()[3]
-                || this.con[0] == constituent.GetInteriorFormat()[0] && this.con[1] != constituent.GetInteriorFormat()[1] && this.con[2] == constituent.GetInteriorFormat()[2] && this.con[3] == constituent.GetInteriorFormat()[3]
-                || this.con[0] == constituent.GetInteriorFormat()[0] && this.con[1] == constituent.GetInteriorFormat()[1] && this.con[2] != constituent.GetInteriorFormat()[2] && this.con[3] == constituent.GetInteriorFormat()[3]
-                || this.con[0] == constituent.GetInteriorFormat()[0] && this.con[1] == constituent.GetInteriorFormat()[1] && this.con[2] == constituent.GetInteriorFormat()[2] && this.con[3] != constituent.GetInteriorFormat()[3];
+            var thisConst = this.con;
+            var otherConst = constituent.GetInteriorFormat();
+
+            return thisConst[0] != otherConst[0] && thisConst[1] == otherConst[1] && thisConst[2] == otherConst[2] && thisConst[3] == otherConst[3]
+                || thisConst[0] == otherConst[0] && thisConst[1] != otherConst[1] && thisConst[2] == otherConst[2] && thisConst[3] == otherConst[3]
+                || thisConst[0] == otherConst[0] && thisConst[1] == otherConst[1] && thisConst[2] != otherConst[2] && thisConst[3] == otherConst[3]
+                || thisConst[0] == otherConst[0] && thisConst[1] == otherConst[1] && thisConst[2] == otherConst[2] && thisConst[3] != otherConst[3];
         }
 
         public Constituent Merge(Constituent constituent)
